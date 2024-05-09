@@ -1,0 +1,70 @@
+' PlantUML ER図ファイルの拡張子 puml
+
+' --------------------------------------------------
+' ルール
+' テーブルの背景色
+' リソースエンティティ
+' #PaleTurquoise
+' 水色 緑色系 (落ち着いた色)
+' --------------------------------------------------
+
+' --------------------------------------------------
+' イベントエンティティ
+' #NavajoWhite
+' 黄色 オレンジ色系 (活発な色)
+' --------------------------------------------------
+
+' --------------------------------------------------
+' |o-- 0 か 1
+' ||-- 1 のみ
+' }o-- 0 以上
+' }|-- 1 以上
+' registration_records }-d-|| countries
+' --------------------------------------------------
+
+
+' --------------------------------------------------
+' テンプレート
+' --------------------------------------------------
+
+@startuml table_name
+
+!define Table(name,desc) entity name as "desc" << (T,#FFAAAA) >>
+!define primary_key(x) <b><u>x</u></b>
+!define foreign_key(x) <u>x</u>
+
+' パッケージ
+package package <<Database>> {
+
+' テーブルの名前小文字複数形スネークケース
+Table(main_tables, "メインテーブル") #PaleTurquoise {
+    primary_key(id) <<generated>> [ID]
+    --
+    ' テーブルのカラム名 小文字スネークケース
+    --
+    ' 日付
+    new_registration_date_time timestamptz [新規登録日時]
+    last_update_date timestamptz [最終更新日時]
+}
+
+Table(sub_tables, "サブテーブル") #PaleTurquoise {
+    primary_key(id) <<generated>> [ID]
+    --
+    ' 外部キー
+    foreign_key(main_table_id) <<FK>> [メインテーブルID]
+    --
+    ' テーブルのカラム名 小文字スネークケース
+    --
+    ' 日付
+    new_registration_date_time timestamptz [新規登録日時]
+    last_update_date timestamptz [最終更新日時]
+}
+
+
+
+ main_tables }--|| sub_tables
+
+'パッケージの閉じカッコ
+}
+
+@enduml
